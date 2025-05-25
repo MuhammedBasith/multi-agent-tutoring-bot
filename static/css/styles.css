@@ -316,6 +316,12 @@ body {
     color: var(--physics-color);
 }
 
+.subject-tag.general {
+    background-color: rgba(128, 128, 128, 0.1);
+    color: var(--text-secondary);
+    display: none; /* Hide the tag for general conversations */
+}
+
 .chat-input-container {
     padding: 1rem 1.5rem;
     border-top: 1px solid #e0e0e0;

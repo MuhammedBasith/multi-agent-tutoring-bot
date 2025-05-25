@@ -260,10 +260,29 @@ function formatMessageContent(content) {
 
 function detectSubject(question, answer) {
     // Simple keyword-based detection
-    const mathKeywords = ['equation', 'calculate', 'solve', 'math', 'algebra', 'geometry', 'calculus', 'theorem', 'formula'];
-    const physicsKeywords = ['physics', 'force', 'energy', 'motion', 'gravity', 'velocity', 'acceleration', 'momentum', 'newton'];
+    const mathKeywords = ['equation', 'calculate', 'solve', 'math', 'algebra', 'geometry', 'calculus', 'theorem', 'formula', 'number', 'arithmetic'];
+    const physicsKeywords = ['physics', 'force', 'energy', 'motion', 'gravity', 'velocity', 'acceleration', 'momentum', 'newton', 'mass', 'weight'];
+    
+    // General question indicators
+    const generalIndicators = [
+        'sorry, i can only answer', 
+        'i\'m your math and physics tutor',
+        'how can i help you',
+        'my name is',
+        'i am a',
+        'nice to meet you',
+        'hello',
+        'hi there'
+    ];
     
     const combinedText = (question + ' ' + answer).toLowerCase();
+    
+    // Check for general question indicators first
+    for (const indicator of generalIndicators) {
+        if (combinedText.includes(indicator.toLowerCase())) {
+            return 'general';
+        }
+    }
     
     let mathScore = 0;
     let physicsScore = 0;
@@ -284,15 +303,25 @@ function detectSubject(question, answer) {
         return 'math';
     } else if (physicsScore > mathScore) {
         return 'physics';
+    } else if (mathScore === 0 && physicsScore === 0) {
+        // If no keywords found at all, it's likely a general question
+        return 'general';
     } else {
-        // If tied or no keywords found, default to math
+        // If tied but keywords were found, default to math
         return 'math';
     }
 }
 
 function updateSubjectIndicator(subject) {
-    detectedSubject.textContent = subject === 'math' ? 'Math Question' : 'Physics Question';
-    indicatorDot.className = 'indicator-dot ' + subject;
+    if (subject === 'general') {
+        // Hide the subject indicator for general questions
+        detectedSubject.textContent = 'General Conversation';
+        indicatorDot.className = 'indicator-dot general';
+    } else {
+        // Show the appropriate subject for math/physics
+        detectedSubject.textContent = subject === 'math' ? 'Math Question' : 'Physics Question';
+        indicatorDot.className = 'indicator-dot ' + subject;
+    }
 }
 
 function saveMessageToHistory(question, answer, subject) {
