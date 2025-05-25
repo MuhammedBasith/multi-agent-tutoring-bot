@@ -128,7 +128,7 @@ Gemini's responses include formatting like bold text and headings, but displayin
 
 ## Live Demo
 
-You can try out the live application here: [Gemini Tutor Demo](https://gemini-tutor-demo.netlify.app)
+You can try out the live application here: [Gemini Tutor Demo]([https://gemini-tutor-demo.netlify.app](https://multi-agent-tutoring-bot-k0lm.onrender.com))
 
 ## Feedback and Contributions
 
