@@ -262,11 +262,22 @@ function detectSubject(question, answer) {
     // Simple keyword-based detection
     const mathKeywords = ['equation', 'calculate', 'solve', 'math', 'algebra', 'geometry', 'calculus', 'theorem', 'formula', 'number', 'arithmetic'];
     const physicsKeywords = ['physics', 'force', 'energy', 'motion', 'gravity', 'velocity', 'acceleration', 'momentum', 'newton', 'mass', 'weight'];
+    const chemistryKeywords = ['chemistry', 'chemical', 'reaction', 'molecule', 'atom', 'element', 'compound', 'acid', 'base', 'periodic table', 'bond', 'organic', 'inorganic', 'solution'];
+    const csKeywords = [
+        // Programming concepts
+        'programming', 'code', 'algorithm', 'computer science', 'data structure', 
+        'function', 'variable', 'class', 'object', 'loop', 'conditional', 'software', 
+        'development', 'debugging', 
+        // Hardware and system components
+        'ram', 'memory', 'cpu', 'processor', 'hard drive', 'ssd', 'computer hardware',
+        'motherboard', 'gpu', 'graphics card', 'operating system', 'linux', 'windows',
+        'mac os', 'binary', 'network', 'internet', 'server', 'database', 'cloud computing'
+    ];
     
     // General question indicators
     const generalIndicators = [
         'sorry, i can only answer', 
-        'i\'m your math and physics tutor',
+        'i\'m your educational tutor',
         'how can i help you',
         'my name is',
         'i am a',
@@ -286,6 +297,8 @@ function detectSubject(question, answer) {
     
     let mathScore = 0;
     let physicsScore = 0;
+    let chemistryScore = 0;
+    let csScore = 0;
     
     mathKeywords.forEach(keyword => {
         if (combinedText.includes(keyword.toLowerCase())) {
@@ -299,16 +312,35 @@ function detectSubject(question, answer) {
         }
     });
     
-    if (mathScore > physicsScore) {
-        return 'math';
-    } else if (physicsScore > mathScore) {
-        return 'physics';
-    } else if (mathScore === 0 && physicsScore === 0) {
+    chemistryKeywords.forEach(keyword => {
+        if (combinedText.includes(keyword.toLowerCase())) {
+            chemistryScore++;
+        }
+    });
+    
+    csKeywords.forEach(keyword => {
+        if (combinedText.includes(keyword.toLowerCase())) {
+            csScore++;
+        }
+    });
+    
+    // Find the subject with the highest score
+    const scores = [
+        { subject: 'math', score: mathScore },
+        { subject: 'physics', score: physicsScore },
+        { subject: 'chemistry', score: chemistryScore },
+        { subject: 'cs', score: csScore }
+    ];
+    
+    // Sort by score in descending order
+    scores.sort((a, b) => b.score - a.score);
+    
+    // If the highest score is greater than 0, return that subject
+    if (scores[0].score > 0) {
+        return scores[0].subject;
+    } else {
         // If no keywords found at all, it's likely a general question
         return 'general';
-    } else {
-        // If tied but keywords were found, default to math
-        return 'math';
     }
 }
 
@@ -318,8 +350,26 @@ function updateSubjectIndicator(subject) {
         detectedSubject.textContent = 'General Conversation';
         indicatorDot.className = 'indicator-dot general';
     } else {
-        // Show the appropriate subject for math/physics
-        detectedSubject.textContent = subject === 'math' ? 'Math Question' : 'Physics Question';
+        // Show the appropriate subject
+        let subjectText = '';
+        switch(subject) {
+            case 'math':
+                subjectText = 'Math Question';
+                break;
+            case 'physics':
+                subjectText = 'Physics Question';
+                break;
+            case 'chemistry':
+                subjectText = 'Chemistry Question';
+                break;
+            case 'cs':
+                subjectText = 'Computer Science Question';
+                break;
+            default:
+                subjectText = 'Academic Question';
+        }
+        
+        detectedSubject.textContent = subjectText;
         indicatorDot.className = 'indicator-dot ' + subject;
     }
 }
