@@ -13,5 +13,5 @@ This project is a multi-agent AI tutoring system built with FastAPI and the Gemi
 
 ```bash
 git clone https://github.com/MuhammedBasith/multi-agent-tutoring-bot.git
-cd multi-agent-tutor
+cd multi-agent-tutoring-bot
 pip install -r requirements.txt
