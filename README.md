@@ -1,5 +1,7 @@
 # Gemini Tutor - Multi-Agent Learning Assistant
 
+![Home Screen](static/images/home.png)
+
 ## What is this project?
 
 Gemini Tutor is an AI-powered learning assistant that helps students with questions in math, physics, chemistry, and computer science. It uses a multi-agent system where each subject has its own specialized agent that knows how to handle questions in that field.
@@ -73,6 +75,8 @@ pip install -r requirements.txt
 
 ## How It Works
 
+![Chat Interface](static/images/home-2.png)
+
 ### The Multi-Agent System
 
 When you ask a question, here's what happens:
@@ -99,6 +103,8 @@ The web interface has these features:
 - **Chat History**: Saves your conversation in your browser
 - **Markdown Support**: Shows formatted text with headings, bold, code blocks, etc.
 - **Subject Indicators**: Shows what subject each question belongs to
+
+![Conversation Example](static/images/convo.png)
 
 ## Challenges and Solutions
 
