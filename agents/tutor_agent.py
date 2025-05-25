@@ -25,9 +25,23 @@ def classify_subject(question: str) -> str:
 
 def tutor_agent(question: str) -> str:
     subject = classify_subject(question)
+    
     if "math" in subject:
         return handle_math_question(question)
     elif "physics" in subject:
         return handle_physics_question(question)
+    elif "general" in subject:
+        # Handle general questions in a friendly way
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        prompt = f"""
+        You are a friendly educational tutor bot. The user has asked a general question: "{question}"
+        
+        If this is a greeting, personal question, or casual conversation, respond in a friendly way.
+        If it's not related to education, politely remind them that you're primarily a math and physics tutor.
+        Keep your response brief and friendly.
+        """
+        response = model.generate_content(prompt)
+        return response.text
     else:
-        return "Sorry, I can only answer math or physics questions right now."
+        # Fallback for any other classification
+        return "I'm your math and physics tutor. How can I help you with a math or physics question today?"
